@@ -82,11 +82,15 @@ const AnnouncementListPage = async({searchParams}:{searchParams:{[key:string]:st
     }
   }
 
-  const roleConditions = {
-    teacher: { lessons: { some: { teacherId: currentUserId! } } },
-    student: { students: { some: { id: currentUserId! } } },
-    parent: { students: { some: { parentId: currentUserId! } } },
-  };
+  if (role === "admin") {
+    // Fetch all announcements for admin
+  } else {
+    // Apply role-based conditions for other roles
+    const roleConditions = {
+      teacher: { lessons: { some: { teacherId: currentUserId! } } },
+      student: { students: { some: { id: currentUserId! } } },
+      parent: { students: { some: { parentId: currentUserId! } } },
+    };
 
   query.OR = [
     { classId: null },
@@ -94,6 +98,7 @@ const AnnouncementListPage = async({searchParams}:{searchParams:{[key:string]:st
       class: roleConditions[role as keyof typeof roleConditions] || {},
     },
   ];
+  }
 
   const [data,count] =await prisma.$transaction([
     

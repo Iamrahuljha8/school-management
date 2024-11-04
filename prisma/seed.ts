@@ -25,57 +25,55 @@ async function main() {
     });
   }
 
-  
+  // CLASS
+  for (let i = 1; i <= 6; i++) {
+    await prisma.class.create({
+      data: {
+        name: `${i}A`, 
+        gradeId: i, 
+        capacity: Math.floor(Math.random() * (20 - 15 + 1)) + 15,
+      },
+    });
+  }
+
   // SUBJECT
   const subjectData = [
-      { name: "Mathematics" },
-      { name: "Science" },
-      { name: "English" },
-      { name: "History" },
-      { name: "Geography" },
-      { name: "Physics" },
-      { name: "Chemistry" },
-      { name: "Biology" },
-      { name: "Computer Science" },
-      { name: "Art" },
-    ];
-    
-    for (const subject of subjectData) {
-        await prisma.subject.create({ data: subject });
-    }
-    
-    // CLASS
-    for (let i = 1; i <= 6; i++) {
-      await prisma.class.create({
-        data: {
-          name: `${i}A`, 
-          gradeId: i, 
-          capacity: Math.floor(Math.random() * (20 - 15 + 1)) + 15,
-        },
-      });
-    }
+    { name: "Mathematics" },
+    { name: "Science" },
+    { name: "English" },
+    { name: "History" },
+    { name: "Geography" },
+    { name: "Physics" },
+    { name: "Chemistry" },
+    { name: "Biology" },
+    { name: "Computer Science" },
+    { name: "Art" },
+  ];
 
+  for (const subject of subjectData) {
+    await prisma.subject.create({ data: subject });
+  }
 
-    // TEACHER
-    for (let i = 1; i <= 15; i++) {
-        await prisma.teacher.create({
-            data: {
-                id: `teacher${i}`, // Unique ID for the teacher
-                username: `teacher${i}`,
-                name: `TName${i}`,
-                surname: `TSurname${i}`,
-                email: `teacher${i}@example.com`,
-                phone: `123-456-789${i}`,
-                address: `Address${i}`,
-                bloodType: "A+",
-                sex: i % 2 === 0 ? UserSex.MALE : UserSex.FEMALE,
-                subjects: { connect: [{ id: (i % 10) + 1 }] }, 
-                classes: { connect: [{ id: (i % 6) + 1 }] }, 
-                birthday: new Date(new Date().setFullYear(new Date().getFullYear() - 30)),
-            },
-        });
-    }
-    
+  // TEACHER
+  for (let i = 1; i <= 15; i++) {
+    await prisma.teacher.create({
+      data: {
+        id: `teacher${i}`, // Unique ID for the teacher
+        username: `teacher${i}`,
+        name: `TName${i}`,
+        surname: `TSurname${i}`,
+        email: `teacher${i}@example.com`,
+        phone: `123-456-789${i}`,
+        address: `Address${i}`,
+        bloodType: "A+",
+        sex: i % 2 === 0 ? UserSex.MALE : UserSex.FEMALE,
+        subjects: { connect: [{ id: (i % 10) + 1 }] }, 
+        classes: { connect: [{ id: (i % 6) + 1 }] }, 
+        birthday: new Date(new Date().setFullYear(new Date().getFullYear() - 30)),
+      },
+    });
+  }
+
   // LESSON
   for (let i = 1; i <= 30; i++) {
     await prisma.lesson.create({

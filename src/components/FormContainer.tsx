@@ -53,15 +53,59 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
         break;
       case "assignment":
         const assignmentLessons = await prisma.lesson.findMany({
-          select: { id: true, name: true },
+          select: { id: true, name: true,subject:true },
         });
         relatedData = { lessons: assignmentLessons };
+        break;
+      case "event":
+        const eventClass = await prisma.class.findMany({
+          select: { id: true, name: true },
+        });
+        relatedData = { standard: eventClass };
+        break;
+      case "announcement":
+        const announcementClass = await prisma.class.findMany({
+          select: { id: true, name: true },
+        });
+        relatedData = { standard: announcementClass };
         break;
       case "parent":
         const parentStudents = await prisma.student.findMany({
           select: { id: true, name: true },
         });
         relatedData = { students: parentStudents };
+        break;
+      case "lesson":
+        const lessonSubjects = await prisma.subject.findMany({
+          select: { id: true, name: true },
+        });
+        const lessonTeachers=await prisma.teacher.findMany({
+          select: { id: true, name: true,surname:true },
+        })
+        const lessonClasses=await prisma.class.findMany({
+          select: { id: true, name: true },
+        })
+        relatedData = { subjects: lessonSubjects,teachers:lessonTeachers,classes:lessonClasses };
+        break;
+      case "result":
+        const resultStudent = await prisma.student.findMany({
+          select: { id: true, name: true },
+        });
+        const resultAssignment= await prisma.assignment.findMany({
+          select: { id: true },
+        })
+        const resultExam= await prisma.exam.findMany({
+          select: {
+            id: true,
+            lessons: {
+              select: {
+                id: true,          
+                subject: true,      
+              },
+            },
+          },
+        })
+        relatedData = { students: resultStudent,exams:resultExam,assignments:resultAssignment };
         break;
       case "student":
         const studentGrades = await prisma.grade.findMany({

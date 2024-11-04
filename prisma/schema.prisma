@@ -123,7 +123,7 @@ model Exam{
 model Assignment{
    id Int @id @default(autoincrement())
    title String
-   startDate DateTime?
+   startDate DateTime?  @default(now())
    dueDate DateTime
     lessonId Int
  lessons Lesson @relation(fields: [lessonId],references: [id])

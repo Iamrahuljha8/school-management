@@ -4,13 +4,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import InputField from "../InputField";
 import {
-    AssignmentSchema,
-    assignmentSchema,
+    AnnouncementSchema,
+    announcementSchema,
  
 } from "@/lib/formValidationSchemas";
 import {
-    createAssignment,
-    updateAssignment,
+    createAnnouncement,
+    updateAnnouncement,
   
 } from "@/lib/action";
 import { useFormState } from "react-dom";
@@ -18,7 +18,7 @@ import { Dispatch, SetStateAction, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
-const AssignmentForm = ({
+const AnnouncementForm = ({
   type,
   data,
   setOpen,
@@ -33,14 +33,14 @@ const AssignmentForm = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<AssignmentSchema>({
-    resolver: zodResolver(assignmentSchema),
+  } = useForm<AnnouncementSchema>({
+    resolver: zodResolver(announcementSchema),
   });
 
   // AFTER REACT 19 IT'LL BE USEACTIONSTATE
 
   const [state, formAction] = useFormState(
-    type === "create" ? createAssignment : updateAssignment,
+    type === "create" ? createAnnouncement : updateAnnouncement,
     {
       success: false,
       error: false,
@@ -56,27 +56,27 @@ const AssignmentForm = ({
 
   useEffect(() => {
     if (state.success) {
-      toast(`Assignment has been ${type === "create" ? "created" : "updated"}!`);
+      toast(`Announcement has been ${type === "create" ? "created" : "updated"}!`);
       setOpen(false);
       router.refresh();
     }
   }, [state, router, type, setOpen]);
 
-  const { lessons } = relatedData;
+  const { standard } = relatedData;
 
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
       <h1 className="text-xl font-semibold">
-        {type === "create" ? "Create a new assignment" : "Update the assignment"}
+        {type === "create" ? "Create a new announcement" : "Update the announcement"}
       </h1>
 
       <div className="flex justify-between flex-wrap gap-4">
         <InputField
-          label="Due Date"
-          name="dueDate"
-          defaultValue={data?.dueDate}
+          label= "Date"
+          name="date"
+          defaultValue={data?.startTime}
           register={register}
-          error={errors?.dueDate}
+          error={errors?.date}
           type="datetime-local"
         />
          <InputField
@@ -86,23 +86,30 @@ const AssignmentForm = ({
           register={register}
           error={errors?.title}
         />
+         <InputField
+          label="Description"
+          name="description"
+          defaultValue={data?.description}
+          register={register}
+          error={errors?.description}
+        />
    
         <div className="flex flex-col gap-2 w-full md:w-1/4">
-          <label className="text-xs text-gray-500">Lesson</label>
+          <label className="text-xs text-gray-500">Class</label>
           <select
             className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
-            {...register("lessonId")}
-            defaultValue={data?.lessonId}
+            {...register("classId")}
+            defaultValue={data?.classId}
           >
-            {lessons?.map((lesson: { id: number; name: string;subject:any }) => (
-              <option value={lesson.id} key={lesson.id}>
-                {lesson.subject.name}
+            {standard?.map((classes: { id: number; name: string }) => (
+              <option value={classes.id} key={classes.id}>
+                {classes.name}
               </option>
             ))}
           </select>
-          {errors.lessonId?.message && (
+          {errors.classId?.message && (
             <p className="text-xs text-red-400">
-              {errors.lessonId.message.toString()}
+              {errors.classId.message.toString()}
             </p>
           )}
         </div>
@@ -117,4 +124,4 @@ const AssignmentForm = ({
   );
 };
 
-export default AssignmentForm;
+export default AnnouncementForm;
