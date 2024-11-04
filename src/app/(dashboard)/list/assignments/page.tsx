@@ -24,7 +24,6 @@ const AssignmentListPage = async({searchParams}:{searchParams:{[key:string]:stri
   const role = (sessionClaims?.metadata as { role?: string })?.role;
   const currentUserId = userId;
 
-  console.log("perfect",role)
   const columns = [
     {
       header: "Subject Name",
@@ -65,7 +64,7 @@ const AssignmentListPage = async({searchParams}:{searchParams:{[key:string]:stri
       <td className="hidden md:table-cell">  {new Intl.DateTimeFormat("en-US").format(item.dueDate)}</td>
       <td>
         <div className="flex items-center gap-2">
-          {role === "admin" || role==="teacher" && (
+          {(role === "admin" || role==="teacher") && (
             <>
               <FormContainer table="assignment" type="update" data={item} />
               <FormContainer table="assignment" type="delete" id={item.id} />
@@ -168,7 +167,7 @@ const AssignmentListPage = async({searchParams}:{searchParams:{[key:string]:stri
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
               <Image src="/sort.png" alt="" width={14} height={14} />
             </button>
-            {role === "admin" || role==="teacher" && <FormContainer table="assignment" type="create" />}
+            {(role === "admin" || role==="teacher") && <FormContainer table="assignment" type="create" />}
           </div>
         </div>
       </div>

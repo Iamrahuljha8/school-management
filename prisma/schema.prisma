@@ -55,7 +55,7 @@ model Teacher{
 }
 model Parent{
       id String @id
-  username String @unique
+  username String? @unique 
   name String
   surname String?
   email String? @unique
@@ -64,7 +64,7 @@ model Parent{
   img String?
   bloodType String?
   sex UserSex?
-  createdat DateTime @default(now())
+  createdat DateTime? @default(now())
   students Student[]
 }
 model Grade{
@@ -123,7 +123,7 @@ model Exam{
 model Assignment{
    id Int @id @default(autoincrement())
    title String
-   startDate DateTime
+   startDate DateTime?
    dueDate DateTime
     lessonId Int
  lessons Lesson @relation(fields: [lessonId],references: [id])

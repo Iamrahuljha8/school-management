@@ -478,23 +478,24 @@ export const createParent = async (
   currentState: CurrentState,
   data: ParentSchema
 ) => {
+  console.log("Data received:", data);
 
   try {
     const client = await clerkClient();
     const user = await client.users.createUser({
       password: data.password,
-      firstName: data.name,
+      username: data.name,
+      firstName:data.name,
       publicMetadata:{role:"parent"}
     });
-    console.log(user)
 
     await prisma.parent.create({
       data: {
         id: user.id,
-        name: data?.name,
-        email: data?.email,
+        name: data?.name as string,
+        email: data?.email as string,
         phone: data.phone as string,
-        address: data.address,
+        address: data.address as string,
         students: {
           connect: data.students?.map((studentId: string) => ({
             id: (studentId),
@@ -582,6 +583,34 @@ export const createAssignment = async (
   try {
 
     await prisma.assignment.create({
+      data: {
+        title: data.title,
+        dueDate: data.dueDate,
+        lessonId: data.lessonId,
+      },
+    });
+
+    // revalidatePath("/list/subjects");
+    return { success: true, error: false };
+  } catch (err) {
+    console.log(err);
+    return { success: false, error: true };
+  }
+};
+
+export const updateAssignment = async (
+  currentState: CurrentState,
+  data: AssignmentSchema
+) => {
+;
+
+  try {
+ 
+
+    await prisma.assignment.update({
+      where: {
+        id: data.id,
+      },
       data: {
         title: data.title,
         dueDate: data.dueDate,

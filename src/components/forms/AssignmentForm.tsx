@@ -10,6 +10,7 @@ import {
 } from "@/lib/formValidationSchemas";
 import {
     createAssignment,
+    updateAssignment,
   
 } from "@/lib/action";
 import { useFormState } from "react-dom";
@@ -39,7 +40,7 @@ const AssignmentForm = ({
   // AFTER REACT 19 IT'LL BE USEACTIONSTATE
 
   const [state, formAction] = useFormState(
-    type === "create" ? createAssignment : updateExam,
+    type === "create" ? createAssignment : updateAssignment,
     {
       success: false,
       error: false,
@@ -55,7 +56,7 @@ const AssignmentForm = ({
 
   useEffect(() => {
     if (state.success) {
-      toast(`Exam has been ${type === "create" ? "created" : "updated"}!`);
+      toast(`Assignment has been ${type === "create" ? "created" : "updated"}!`);
       setOpen(false);
       router.refresh();
     }
@@ -83,18 +84,18 @@ const AssignmentForm = ({
           <label className="text-xs text-gray-500">Lesson</label>
           <select
             className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
-            {...register("subjectId")}
+            {...register("lessonId")}
             defaultValue={data?.subject}
           >
-            {lessons.map((lesson: { id: number; name: string }) => (
+            {lessons?.map((lesson: { id: number; name: string }) => (
               <option value={lesson.id} key={lesson.id}>
                 {lesson.name}
               </option>
             ))}
           </select>
-          {errors.subjectId?.message && (
+          {errors.lessonId?.message && (
             <p className="text-xs text-red-400">
-              {errors.subjectId.message.toString()}
+              {errors.lessonId.message.toString()}
             </p>
           )}
         </div>
