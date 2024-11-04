@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+     "postinstall": "prisma generate"
   },
   "dependencies": {
     "@clerk/elements": "^0.18.0",
@@ -38,6 +39,7 @@
     "typescript": "^5"
   },
   "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts",
+     "clientEngineType": "binary"
   }
 }
