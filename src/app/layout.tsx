@@ -7,7 +7,7 @@ const ClerkProvider = dynamic(() => import("@clerk/nextjs").then(mod => mod.Cler
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Prashant School Management Dashboard",
+  title: "Rahul-Ka-School",
   description: "Next.js School Management System",
 };
 
